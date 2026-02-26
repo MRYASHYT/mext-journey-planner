@@ -55,6 +55,8 @@ export default {
           DEFAULT: "hsl(var(--gold))",
           foreground: "hsl(var(--gold-foreground))",
         },
+        heroOverlay: "hsl(var(--hero-overlay))",
+        espresso: "#2A1B14",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

@@ -51,8 +51,10 @@ const ApplicationSection = () => {
           <p className="text-sm text-muted-foreground mb-6">
             Only 5 spots. Selection is based on seriousness and academic commitment.
           </p>
-          <Button variant="hero" size="lg" className="px-10">
-            Apply for Residency
+          <Button variant="hero" size="lg" className="px-10" asChild>
+            <a href="https://forms.gle/PqMzbFCpnkUFLyXo8" target="_blank" rel="noopener noreferrer">
+              Apply for Residency
+            </a>
           </Button>
         </div>
       </div>
