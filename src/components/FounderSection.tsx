@@ -100,7 +100,7 @@ const FounderSection = () => {
                     </div>
 
                     {/* Photo Placeholder */}
-                    <div className={`lg:w-2/5 flex justify-center lg:justify-end transition-all duration-700 delay-500 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
+                    <div className={`w-full lg:w-2/5 flex flex-col items-center justify-center lg:items-end transition-all duration-700 delay-500 ${isVisible ? 'animate-fade-in' : 'opacity-0'} mt-8 lg:mt-0`}>
                         <div className="relative w-full max-w-[400px] aspect-[3/4] rounded-lg border border-border/80 bg-card overflow-hidden group shadow-xl">
                             {/* Decorative Frame */}
                             <div className="absolute inset-2 border border-accent/20 rounded-md z-10 pointer-events-none" />
@@ -113,6 +113,10 @@ const FounderSection = () => {
                                 alt="Yash Gupta - Founder"
                                 className="absolute inset-0 w-full h-full object-cover grayscale opacity-90 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 pointer-events-none"
                             />
+                        </div>
+                        <div className="mt-6 text-center lg:text-right w-full max-w-[400px]">
+                            <p className="font-heading text-2xl font-bold text-foreground">Yash Gupta</p>
+                            <p className="font-body text-sm text-accent uppercase tracking-[0.2em] mt-1">Founder</p>
                         </div>
                     </div>
                 </div>

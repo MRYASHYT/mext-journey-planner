@@ -1,8 +1,14 @@
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Instagram, MapPin } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const ContactSection = () => {
   const { ref, isVisible } = useScrollAnimation();
+
+  const contacts = [
+    { icon: Mail, label: "Email", value: "info@mastenhq.page", link: "mailto:info@mastenhq.page" },
+    { icon: Instagram, label: "Instagram", value: "@mastenhq", link: "https://instagram.com/mastenhq" },
+    { icon: MapPin, label: "Location", value: "Delhi, India" },
+  ];
 
   return (
     <section id="contact" className="py-20 md:py-28 bg-background">
@@ -16,20 +22,31 @@ const ContactSection = () => {
         </div>
 
         <div className="grid sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
-          {[
-            { icon: Mail, label: "Email", value: "info@mastenhq.com" },
-            { icon: Phone, label: "Phone", value: "+91 98XX XXX XXX" },
-            { icon: MapPin, label: "Location", value: "Delhi, India" },
-          ].map((item, i) => (
-            <div
-              key={item.label}
-              className={`flex flex-col items-center text-center bg-card border border-border rounded-lg p-6 hover:border-accent/30 hover:shadow-[var(--shadow-soft)] transition-all duration-300 ${isVisible ? 'animate-fade-up' : 'opacity-0'}`}
-              style={{ animationDelay: `${0.2 + i * 0.1}s` }}
-            >
-              <item.icon className="w-5 h-5 text-accent mb-3" />
-              <p className="text-xs text-muted-foreground mb-1">{item.label}</p>
-              <p className="text-sm text-foreground font-medium">{item.value}</p>
-            </div>
+          {contacts.map((item, i) => (
+            item.link ? (
+              <a
+                key={item.label}
+                href={item.link}
+                target={item.link.startsWith('http') ? '_blank' : undefined}
+                rel={item.link.startsWith('http') ? 'noopener noreferrer' : undefined}
+                className={`flex flex-col items-center text-center bg-card border border-border rounded-lg p-6 hover:border-accent/30 hover:shadow-[var(--shadow-soft)] transition-all duration-300 ${isVisible ? 'animate-fade-up' : 'opacity-0'} cursor-pointer group hover:-translate-y-1`}
+                style={{ animationDelay: `${0.2 + i * 0.1}s` }}
+              >
+                <item.icon className="w-6 h-6 text-accent mb-4 group-hover:scale-110 transition-transform duration-300" />
+                <p className="text-xs text-muted-foreground tracking-widest uppercase mb-2">{item.label}</p>
+                <p className="text-sm md:text-base text-foreground font-medium">{item.value}</p>
+              </a>
+            ) : (
+              <div
+                key={item.label}
+                className={`flex flex-col items-center text-center bg-card border border-border rounded-lg p-6 transition-all duration-300 ${isVisible ? 'animate-fade-up' : 'opacity-0'}`}
+                style={{ animationDelay: `${0.2 + i * 0.1}s` }}
+              >
+                <item.icon className="w-6 h-6 text-accent mb-4" />
+                <p className="text-xs text-muted-foreground tracking-widest uppercase mb-2">{item.label}</p>
+                <p className="text-sm md:text-base text-foreground font-medium">{item.value}</p>
+              </div>
+            )
           ))}
         </div>
       </div>

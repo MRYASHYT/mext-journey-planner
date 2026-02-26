@@ -5,7 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: "/bright-scholar-path/",
+  base: "/",
   server: {
     host: "::",
     port: 8080,
