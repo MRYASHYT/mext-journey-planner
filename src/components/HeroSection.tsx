@@ -17,7 +17,7 @@ const HeroSection = () => {
   }, [theme]);
 
   // Use a stark black overlay for dark mode (non-reddish), and espresso for light mode
-  const overlayClass = isDarkMode ? "bg-[#050505]/85" : "bg-[#2A1B14]/90";
+  const overlayClass = isDarkMode ? "bg-[#050505]/85" : "bg-[#2A1B14]/80";
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
