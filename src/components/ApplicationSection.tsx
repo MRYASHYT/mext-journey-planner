@@ -1,30 +1,36 @@
 import { Button } from "@/components/ui/button";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const steps = [
-  { num: "01", title: "Submit Online Application", desc: "Complete the application form with your academic details and scholarship goals." },
-  { num: "02", title: "Academic Profile Review", desc: "Our team evaluates your profile, research interests, and scholarship readiness." },
-  { num: "03", title: "Personal Interview", desc: "A brief interview to assess commitment, discipline, and academic seriousness." },
-  { num: "04", title: "Final Selection", desc: "Selected candidates are notified and onboarded into the residency program." },
+  { num: "01", title: "Submit Online Application", desc: "Complete the form with your academic details and MEXT scholarship goals." },
+  { num: "02", title: "Personal Interview", desc: "A brief interview to assess commitment, discipline, and academic seriousness." },
+  { num: "03", title: "Selection Email", desc: "Selected candidates are notified within 7 days and onboarded into the residency." },
 ];
 
 const ApplicationSection = () => {
+  const { ref, isVisible } = useScrollAnimation();
+
   return (
     <section id="apply" className="py-20 md:py-28 bg-background">
-      <div className="container mx-auto px-4 max-w-4xl">
-        <div className="text-center mb-16">
+      <div ref={ref} className="container mx-auto px-4 max-w-4xl">
+        <div className={`text-center mb-16 transition-all duration-700 ${isVisible ? 'animate-fade-up' : 'opacity-0'}`}>
           <span className="text-accent text-xs tracking-[0.4em] uppercase font-body block mb-3">応募 · Apply</span>
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Application Process
+            Selection Process
           </h2>
           <div className="w-16 h-0.5 bg-accent mx-auto" />
         </div>
 
         <div className="space-y-0">
           {steps.map((step, i) => (
-            <div key={step.num} className="flex gap-6 items-start group">
+            <div
+              key={step.num}
+              className={`flex gap-6 items-start group transition-all duration-700 ${isVisible ? 'animate-fade-up' : 'opacity-0'}`}
+              style={{ animationDelay: `${0.3 + i * 0.15}s` }}
+            >
               {/* Timeline */}
               <div className="flex flex-col items-center">
-                <div className="w-10 h-10 rounded-full border-2 border-accent flex items-center justify-center text-xs font-bold text-accent font-body">
+                <div className="w-10 h-10 rounded-full border-2 border-accent flex items-center justify-center text-xs font-bold text-accent font-body group-hover:bg-accent group-hover:text-accent-foreground transition-colors duration-300">
                   {step.num}
                 </div>
                 {i < steps.length - 1 && (
@@ -41,9 +47,9 @@ const ApplicationSection = () => {
           ))}
         </div>
 
-        <div className="text-center mt-8">
+        <div className={`text-center mt-8 transition-all duration-700 delay-700 ${isVisible ? 'animate-fade-up' : 'opacity-0'}`}>
           <p className="text-sm text-muted-foreground mb-6">
-            Seats are limited and selection is based on seriousness and academic commitment.
+            Only 5 spots. Selection is based on seriousness and academic commitment.
           </p>
           <Button variant="hero" size="lg" className="px-10">
             Apply for Residency

@@ -6,36 +6,36 @@ const HeroSection = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center transition-transform duration-[20s] hover:scale-105"
         style={{ backgroundImage: `url(${heroBg})` }}
       />
-      <div className="absolute inset-0 bg-primary/85" />
+      <div className="absolute inset-0 bg-primary/80" />
 
       {/* Japanese-inspired decorative line */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-accent/60" />
 
       <div className="relative z-10 container mx-auto px-4 text-center max-w-3xl">
-        {/* Small decorative kanji-inspired element */}
-        <div className="mb-6 flex justify-center">
-          <span className="text-accent/80 text-sm tracking-[0.5em] uppercase font-body">
-            学 · Scholarship · 奨学金
+        {/* Badge */}
+        <div className="mb-6 flex justify-center animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          <span className="inline-flex items-center gap-2 bg-accent/20 backdrop-blur-sm border border-accent/30 rounded-full px-5 py-2 text-primary-foreground text-sm font-body">
+            🇯🇵 Your Gateway to Japan
           </span>
         </div>
 
-        <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight mb-6 text-balance">
-          Prepare for Global Scholarships in a Focused Academic Environment
+        <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight mb-6 text-balance animate-fade-up" style={{ animationDelay: '0.4s' }}>
+          MEXT Scholarship Preparation Residency
         </h1>
 
-        <p className="font-heading text-lg sm:text-xl text-primary-foreground/80 mb-4 italic">
-          Live. Study. Compete. Succeed.
+        <p className="font-heading text-lg sm:text-xl text-primary-foreground/80 mb-4 italic animate-fade-up" style={{ animationDelay: '0.6s' }}>
+          "Your complete roadmap to a fully funded education in Japan 🇯🇵"
         </p>
 
-        <p className="text-primary-foreground/70 text-base sm:text-lg max-w-2xl mx-auto mb-10 font-body leading-relaxed">
-          A structured scholarship preparation residency in Delhi designed for disciplined students
-          aiming for fully funded international opportunities.
+        <p className="text-primary-foreground/70 text-base sm:text-lg max-w-2xl mx-auto mb-10 font-body leading-relaxed animate-fade-up" style={{ animationDelay: '0.8s' }}>
+          A high-discipline scholarship preparation residency in Delhi for Bachelor's & Master's students
+          aiming for the MEXT Scholarship to Japan.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-up" style={{ animationDelay: '1s' }}>
           <Button variant="hero" size="lg" className="text-base px-8" asChild>
             <a href="#apply">Apply for Residency</a>
           </Button>
@@ -44,15 +44,10 @@ const HeroSection = () => {
           </Button>
         </div>
 
-        {/* Trust indicators */}
-        <div className="mt-16 flex flex-wrap justify-center gap-6 text-primary-foreground/50 text-xs font-body uppercase tracking-widest">
-          <span>MEXT</span>
-          <span className="text-accent">·</span>
-          <span>Erasmus Mundus</span>
-          <span className="text-accent">·</span>
-          <span>CSC China</span>
-          <span className="text-accent">·</span>
-          <span>SINGA</span>
+        {/* Trust indicator */}
+        <div className="mt-16 animate-fade-in" style={{ animationDelay: '1.2s' }}>
+          <p className="text-primary-foreground/40 text-xs font-body uppercase tracking-widest mb-3">Limited Intake</p>
+          <p className="text-primary-foreground/60 text-sm font-heading">Only 5 Spots Available</p>
         </div>
       </div>
 
