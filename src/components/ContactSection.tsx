@@ -5,7 +5,7 @@ const ContactSection = () => {
   const { ref, isVisible } = useScrollAnimation();
 
   const contacts = [
-    { icon: Mail, label: "Email", value: "info@mastenhq.page", link: "mailto:info@mastenhq.page" },
+    { icon: Mail, label: "Email", value: "contact@mryashdev.me", link: "mailto:contact@mryashdev.me" },
     { icon: Instagram, label: "Instagram", value: "@mastenhq", link: "https://instagram.com/mastenhq" },
     { icon: MapPin, label: "Location", value: "Delhi, India" },
   ];
