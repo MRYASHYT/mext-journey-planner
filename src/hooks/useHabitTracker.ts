@@ -1,5 +1,7 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { weeklyData, Task, WeekData } from "@/data/weeklyData";
+import { useAuth } from "./useAuth";
+import { supabase } from "@/integrations/supabase/client";
 
 const STORAGE_KEY = "mext-habit-tracker-v2";
 const STREAK_KEY = "mext-streak";
@@ -36,55 +38,92 @@ interface CustomTasksData {
 }
 
 export const useHabitTracker = () => {
+  const { user, isAuthenticated } = useAuth();
   const [currentWeek, setCurrentWeek] = useState(1);
   const [dailyTasks, setDailyTasks] = useState<Record<number, DailyTasks>>({});
   const [notes, setNotes] = useState<NotesData>({});
   const [streak, setStreak] = useState(0);
   const [customTasks, setCustomTasks] = useState<CustomTasksData>({});
   const [removedTasks, setRemovedTasks] = useState<Record<number, string[]>>({});
+  const [isSyncing, setIsSyncing] = useState(false);
+  const initialLoadDone = useRef(false);
 
-  // Load data from localStorage
+  // Load from Supabase if authenticated
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
+    const fetchUserData = async () => {
+      if (!user) return;
+
+      setIsSyncing(true);
       try {
-        const data: StoredData = JSON.parse(stored);
-        setCurrentWeek(data.currentWeek || 1);
-        setDailyTasks(data.dailyTasks || {});
+        const { data, error } = await supabase
+          .from('user_data')
+          .select('state')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        if (error) throw error;
+
+        if (data && data.state) {
+          const state = data.state as any;
+          setDailyTasks(state.dailyTasks || {});
+          setNotes(state.notes || {});
+          setCustomTasks(state.customTasks || {});
+          setRemovedTasks(state.removedTasks || {});
+          setStreak(state.streak || 0);
+          setCurrentWeek(state.currentWeek || 1);
+
+          // Also update localStorage as a backup
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({ dailyTasks: state.dailyTasks, currentWeek: state.currentWeek }));
+          localStorage.setItem(NOTES_KEY, JSON.stringify(state.notes));
+          localStorage.setItem(CUSTOM_TASKS_KEY, JSON.stringify({ custom: state.customTasks, removed: state.removedTasks }));
+        }
       } catch (e) {
-        console.error("Failed to parse stored data:", e);
+        console.error("Failed to sync from Supabase:", e);
+      } finally {
+        setIsSyncing(false);
+        initialLoadDone.current = true;
       }
+    };
+
+    if (isAuthenticated) {
+      fetchUserData();
+    } else {
+      // Load data from localStorage if not authenticated
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          const data: StoredData = JSON.parse(stored);
+          setCurrentWeek(data.currentWeek || 1);
+          setDailyTasks(data.dailyTasks || {});
+        } catch (e) { console.error("Failed to parse stored data:", e); }
+      }
+
+      const storedNotes = localStorage.getItem(NOTES_KEY);
+      if (storedNotes) {
+        try { setNotes(JSON.parse(storedNotes)); } catch (e) { console.error("Failed to parse notes:", e); }
+      }
+
+      const storedCustomTasks = localStorage.getItem(CUSTOM_TASKS_KEY);
+      if (storedCustomTasks) {
+        try {
+          const parsed = JSON.parse(storedCustomTasks);
+          setCustomTasks(parsed.custom || {});
+          setRemovedTasks(parsed.removed || {});
+        } catch (e) { console.error("Failed to parse custom tasks:", e); }
+      }
+      initialLoadDone.current = true;
     }
 
-    const storedNotes = localStorage.getItem(NOTES_KEY);
-    if (storedNotes) {
-      try {
-        setNotes(JSON.parse(storedNotes));
-      } catch (e) {
-        console.error("Failed to parse notes:", e);
-      }
-    }
-
-    const storedCustomTasks = localStorage.getItem(CUSTOM_TASKS_KEY);
-    if (storedCustomTasks) {
-      try {
-        const parsed = JSON.parse(storedCustomTasks);
-        setCustomTasks(parsed.custom || {});
-        setRemovedTasks(parsed.removed || {});
-      } catch (e) {
-        console.error("Failed to parse notes:", e);
-      }
-    }
-
-    // Calculate streak
+    // Calculate streak (this part remains the same, but ensure it's not overwritten by Supabase if it loads later)
+    // This will run after the initial load from either source.
     const lastActivity = localStorage.getItem(LAST_ACTIVITY_KEY);
     const storedStreak = parseInt(localStorage.getItem(STREAK_KEY) || "0");
-    
+
     if (lastActivity) {
       const lastDate = new Date(lastActivity);
       const today = new Date();
       const diffDays = Math.floor((today.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24));
-      
+
       if (diffDays <= 1) {
         setStreak(storedStreak);
       } else {
@@ -92,24 +131,44 @@ export const useHabitTracker = () => {
         localStorage.setItem(STREAK_KEY, "0");
       }
     }
-  }, []);
+  }, [user, isAuthenticated]);
 
-  // Save to localStorage
+  // Sync / Save to localStorage & Supabase
   useEffect(() => {
-    const data: StoredData = {
-      dailyTasks,
-      currentWeek,
-    };
+    if (!initialLoadDone.current) return;
+
+    // Save to localStorage
+    const data: StoredData = { dailyTasks, currentWeek };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  }, [dailyTasks, currentWeek]);
-
-  useEffect(() => {
     localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
-  }, [notes]);
-
-  useEffect(() => {
     localStorage.setItem(CUSTOM_TASKS_KEY, JSON.stringify({ custom: customTasks, removed: removedTasks }));
-  }, [customTasks, removedTasks]);
+    localStorage.setItem(STREAK_KEY, streak.toString()); // Ensure streak is also saved to local storage
+
+    // Upsert to Supabase if authenticated
+    const syncToSupabase = async () => {
+      if (!user) return;
+
+      const { error } = await supabase
+        .from('user_data')
+        .upsert({
+          user_id: user.id,
+          state: {
+            dailyTasks,
+            notes,
+            customTasks,
+            removedTasks,
+            currentWeek,
+            streak
+          } as any,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'user_id' });
+
+      if (error) console.error("Failed to sync to Supabase:", error);
+    };
+
+    const timeout = setTimeout(syncToSupabase, 1000); // Debounce sync
+    return () => clearTimeout(timeout);
+  }, [dailyTasks, currentWeek, notes, customTasks, removedTasks, streak, user]);
 
   const toggleDailyTask = useCallback((weekNumber: number, taskId: string, dayIndex: number) => {
     setDailyTasks(prev => {
@@ -123,7 +182,7 @@ export const useHabitTracker = () => {
       if (taskDays[dayIndex]) {
         const today = new Date().toISOString().split('T')[0];
         const lastActivity = localStorage.getItem(LAST_ACTIVITY_KEY);
-        
+
         if (lastActivity !== today) {
           const currentStreak = parseInt(localStorage.getItem(STREAK_KEY) || "0");
           const newStreak = currentStreak + 1;
@@ -164,7 +223,7 @@ export const useHabitTracker = () => {
     weeklyData.forEach(week => {
       const weekTasks = [...week.japanese, ...week.aiml, ...week.college, ...week.goals];
       const weekDailyTasks = dailyTasks[week.weekNumber] || {};
-      
+
       weekTasks.forEach(task => {
         const days = weekDailyTasks[task.id] || [false, false, false, false, false, false, false];
         completedCount += days.filter(Boolean).length;
@@ -194,7 +253,7 @@ export const useHabitTracker = () => {
       const weekDailyTasks = dailyTasks[week.weekNumber] || {};
       let weekTotal = 0;
       let weekCompleted = 0;
-      
+
       weekTasks.forEach(task => {
         const days = weekDailyTasks[task.id] || [false, false, false, false, false, false, false];
         weekCompleted += days.filter(Boolean).length;

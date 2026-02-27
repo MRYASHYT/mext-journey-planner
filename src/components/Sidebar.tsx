@@ -3,6 +3,7 @@ import { Flame, BarChart3, Target, Link2, Settings, X, Palette } from "lucide-re
 import { cn } from "@/lib/utils";
 import { WeekData } from "@/data/weeklyData";
 import { useState } from "react";
+import { Auth } from "./Auth";
 
 interface SidebarProps {
   weekProgress: number;
@@ -50,7 +51,7 @@ export const Sidebar = ({
           <BarChart3 className="w-4 h-4" />
           Quick Stats
         </div>
-        
+
         <div className="space-y-3">
           <div className="stat-card">
             <div className="flex justify-between items-center mb-1">
@@ -99,10 +100,10 @@ export const Sidebar = ({
           {milestones.map(m => {
             const isCompleted = currentWeek.weekNumber >= m.week;
             const isCurrent = currentWeek.weekNumber >= m.week - 5 && currentWeek.weekNumber < m.week;
-            
+
             return (
-              <div 
-                key={m.week} 
+              <div
+                key={m.week}
                 className={cn(
                   "flex items-center gap-2 text-sm py-1",
                   isCompleted ? "text-primary" : isCurrent ? "text-foreground" : "text-muted-foreground"
@@ -145,7 +146,7 @@ export const Sidebar = ({
 
       {/* Theme Selector */}
       <div className="glass-card p-4">
-        <button 
+        <button
           onClick={() => setShowThemes(!showThemes)}
           className="sidebar-title w-full justify-between cursor-pointer hover:text-foreground transition-colors"
         >
@@ -155,7 +156,7 @@ export const Sidebar = ({
           </div>
           <span className="text-xs">{themes.find(t => t.id === theme)?.emoji}</span>
         </button>
-        
+
         {showThemes && (
           <div className="space-y-1 mt-2">
             {themes.map(t => (
@@ -164,8 +165,8 @@ export const Sidebar = ({
                 onClick={() => changeTheme(t.id)}
                 className={cn("theme-btn", theme === t.id && "active")}
               >
-                <div 
-                  className="theme-dot" 
+                <div
+                  className="theme-dot"
                   style={{ background: `linear-gradient(135deg, ${t.colors[0]}, ${t.colors[1]})` }}
                 />
                 <span className="flex-1 text-left">{t.name}</span>
@@ -175,6 +176,9 @@ export const Sidebar = ({
           </div>
         )}
       </div>
+
+      {/* Sync / Auth */}
+      <Auth />
     </aside>
   );
 };
