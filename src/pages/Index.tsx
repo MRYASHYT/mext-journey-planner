@@ -55,7 +55,7 @@ const Index = () => {
     doc.setFontSize(12);
     doc.text(`${weekData.startDate} - ${weekData.endDate}, ${weekData.year}`, 20, 30);
     doc.text(`Phase: ${weekData.phase} | Focus: ${weekData.focus}`, 20, 40);
-    
+
     let y = 55;
     const sections = [
       { title: 'Japanese Learning', tasks: weekData.japanese },
@@ -104,7 +104,7 @@ const Index = () => {
         </div>
 
         {/* Week Header */}
-        <WeekHeader 
+        <WeekHeader
           week={weekData}
           currentWeek={currentWeek}
           totalWeeks={totalWeeks}
@@ -134,7 +134,7 @@ const Index = () => {
               dailyTasks={dailyTasks}
               onToggle={(taskId, dayIndex) => toggleDailyTask(currentWeek, taskId, dayIndex)}
             />
-            
+
             <DailyTaskGrid
               title="AI/ML Work"
               icon={<Brain className="w-5 h-5" />}
@@ -143,7 +143,7 @@ const Index = () => {
               dailyTasks={dailyTasks}
               onToggle={(taskId, dayIndex) => toggleDailyTask(currentWeek, taskId, dayIndex)}
             />
-            
+
             <DailyTaskGrid
               title="College Work"
               icon={<GraduationCap className="w-5 h-5" />}
@@ -152,7 +152,7 @@ const Index = () => {
               dailyTasks={dailyTasks}
               onToggle={(taskId, dayIndex) => toggleDailyTask(currentWeek, taskId, dayIndex)}
             />
-            
+
             <DailyTaskGrid
               title="Weekly Goals"
               icon={<Target className="w-5 h-5" />}
@@ -175,7 +175,7 @@ const Index = () => {
       </div>
 
       {/* AI Chatbot */}
-      <Chatbot 
+      <Chatbot
         weekData={weekData}
         onAddTask={handleAddTask}
         onRemoveTask={handleRemoveTask}
