@@ -25,7 +25,7 @@ const AboutSection = () => {
         </div>
 
         <p className={`text-muted-foreground text-lg leading-relaxed text-center mb-12 max-w-3xl mx-auto transition-all duration-700 delay-200 ${isVisible ? 'animate-fade-up' : 'opacity-0'}`}>
-          MASTENHQ is a high-discipline residency and mentorship program in Delhi for serious students
+          MEXT Journey Planner is a high-discipline residency and mentorship program in Delhi for serious students
           preparing for the MEXT Scholarship (Japan) — for both Bachelor's and Master's level.
         </p>
 
