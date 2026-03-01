@@ -37,15 +37,15 @@ export const WeekHeader = ({
           </h2>
           <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">{week.focus}</p>
 
-          <div className="mt-8 flex flex-col items-center md:items-start gap-3">
+          <div className="mt-8 flex flex-col items-center md:items-start gap-3 w-full max-w-full overflow-hidden">
             <span className="sidebar-header !mb-0 text-[10px]">Mark Whole Day Complete</span>
-            <div className="flex gap-2">
+            <div className="flex gap-2 pb-2 overflow-x-auto w-full md:w-auto justify-start sm:justify-center md:justify-start scrollbar-hide snap-x px-1">
               {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, ix) => (
                 <button
                   key={ix}
                   onClick={() => onToggleDay(ix, daysCompleted[ix])}
                   className={cn(
-                    "w-12 h-12 border-2 flex items-center justify-center rounded-xl transition-all duration-300 font-bold text-xs uppercase hover:scale-110",
+                    "w-10 h-10 sm:w-12 sm:h-12 shrink-0 snap-start border-2 flex items-center justify-center rounded-xl transition-all duration-300 font-bold text-xs uppercase hover:scale-110",
                     daysCompleted[ix]
                       ? "bg-foreground text-background border-foreground shadow-lg"
                       : "border-border/40 text-muted-foreground hover:border-foreground/40"

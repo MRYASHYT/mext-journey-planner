@@ -102,13 +102,14 @@ export const DailyTaskGrid = ({
       {!isCollapsed && (
         <div className="animate-in fade-in slide-in-from-top-2 duration-500">
           {/* Day headers */}
-          <div className="grid grid-cols-[auto_1fr] gap-4 mb-4">
-            <div className="flex items-center gap-1 min-w-0 pr-2 pl-2">
+          <div className="flex flex-col sm:grid sm:grid-cols-[auto_1fr] gap-2 sm:gap-4 mb-4">
+            <div className="sidebar-header !mb-0 sm:hidden">Task Details</div>
+            <div className="flex items-center gap-1 min-w-0 pr-2 pl-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-hide">
               {DAYS.map(day => (
-                <div key={day} className="w-12 text-[10px] font-bold text-muted-foreground uppercase text-center">{day.substring(0, 1)}</div>
+                <div key={day} className="w-10 sm:w-12 text-[10px] font-bold text-muted-foreground uppercase text-center shrink-0">{day.substring(0, 1)}</div>
               ))}
             </div>
-            <div className="sidebar-header !mb-0 self-end pb-2">Task Details</div>
+            <div className="sidebar-header !mb-0 hidden sm:block self-end pb-2">Task Details</div>
           </div>
 
           {/* Tasks */}
@@ -117,28 +118,28 @@ export const DailyTaskGrid = ({
               const taskDays = dailyTasks[task.id] || [false, false, false, false, false, false, false];
 
               return (
-                <div key={task.id} className="grid grid-cols-[auto_1fr] gap-4 items-center border-b border-border hover:bg-muted/30 transition-colors group">
-                  <div className="flex items-center gap-1 min-w-0 pr-2 py-3 pl-2 shrink-0">
+                <div key={task.id} className="flex flex-col sm:grid sm:grid-cols-[auto_1fr] gap-2 sm:gap-4 py-3 sm:py-0 sm:items-center border-b border-border hover:bg-muted/30 transition-colors group">
+                  <div className="flex items-center gap-1 min-w-0 pr-2 sm:py-3 pl-2 shrink-0 overflow-x-auto pb-2 sm:pb-0 scrollbar-hide">
                     {DAYS.map((_, dayIndex) => (
                       <button
                         key={dayIndex}
                         onClick={() => onToggle(task.id, dayIndex)}
                         className={cn(
-                          "task-cell",
+                          "task-cell !w-10 !h-10 sm:!w-12 sm:!h-12 shrink-0",
                           taskDays[dayIndex] && "active"
                         )}
                         title={`Mark ${DAYS[dayIndex]} complete`}
                       />
                     ))}
                   </div>
-                  <div className="flex items-center gap-2 min-w-0 py-3 pr-2 grow">
-                    <span className="text-xs font-bold truncate text-foreground/80 group-hover:text-foreground transition-colors">{task.text}</span>
+                  <div className="flex items-start sm:items-center gap-2 min-w-0 sm:py-3 pr-2 pl-2 sm:pl-0 grow">
+                    <span className="text-xs font-bold leading-tight sm:truncate text-foreground/80 group-hover:text-foreground transition-colors">{task.text}</span>
                     {task.link && (
                       <a
                         href={task.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-shrink-0 text-foreground opacity-20 group-hover:opacity-100 transition-all"
+                        className="flex-shrink-0 text-foreground opacity-20 group-hover:opacity-100 transition-all mt-0.5 sm:mt-0"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <ExternalLink className="w-3 h-3" />
