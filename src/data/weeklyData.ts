@@ -44,7 +44,7 @@ const getWeekDates = (weekNum: number) => {
 export const generateWeeklyData = (): WeekData[] => {
   const weeks: WeekData[] = [];
 
-  // December 2024 (Weeks 1-4) - Foundations
+  // December 2026 (Weeks 1-4) - Foundations
   for (let w = 1; w <= 4; w++) {
     const dates = getWeekDates(w);
     weeks.push({
@@ -79,7 +79,7 @@ export const generateWeeklyData = (): WeekData[] => {
     });
   }
 
-  // January 2025 (Weeks 5-8) - Foundations
+  // January 2027 (Weeks 5-8) - Foundations
   for (let w = 5; w <= 8; w++) {
     const dates = getWeekDates(w);
     weeks.push({
@@ -120,7 +120,7 @@ export const generateWeeklyData = (): WeekData[] => {
     });
   }
 
-  // February 2025 (Weeks 9-12)
+  // February 2027 (Weeks 9-12)
   for (let w = 9; w <= 12; w++) {
     const dates = getWeekDates(w);
     weeks.push({
@@ -157,7 +157,7 @@ export const generateWeeklyData = (): WeekData[] => {
     });
   }
 
-  // March-May 2025 (Weeks 13-24)
+  // March-May 2027 (Weeks 13-24)
   for (let w = 13; w <= 24; w++) {
     const dates = getWeekDates(w);
     const month = dates.month;
@@ -203,7 +203,7 @@ export const generateWeeklyData = (): WeekData[] => {
     });
   }
 
-  // June-July 2025 Summer Break (Weeks 25-32) - Core Building
+  // June-July 2027 Summer Break (Weeks 25-32) - Core Building
   for (let w = 25; w <= 32; w++) {
     const dates = getWeekDates(w);
     const isJuly = w >= 29;
@@ -241,7 +241,7 @@ export const generateWeeklyData = (): WeekData[] => {
     });
   }
 
-  // August-December 2025 (Weeks 33-52)
+  // August-December 2027 (Weeks 33-52)
   for (let w = 33; w <= 52; w++) {
     const dates = getWeekDates(w);
     let focus = "";

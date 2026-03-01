@@ -39,9 +39,9 @@ export const Notes = ({ notes, onSave }: NotesProps) => {
           <FileText className="w-5 h-5 text-primary" />
           <h3 className="font-semibold">Weekly Notes & Reflections</h3>
         </div>
-        <Button 
-          onClick={handleSave} 
-          size="sm" 
+        <Button
+          onClick={handleSave}
+          size="sm"
           disabled={!hasChanges}
           className="gap-2"
         >
@@ -59,7 +59,7 @@ export const Notes = ({ notes, onSave }: NotesProps) => {
             value={localNotes.wentWell}
             onChange={(e) => handleChange('wentWell', e.target.value)}
             placeholder="Celebrate your wins..."
-            className="notes-textarea"
+            className="w-full min-h-[100px] p-3 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-foreground/20 resize-y"
           />
         </div>
 
@@ -71,7 +71,7 @@ export const Notes = ({ notes, onSave }: NotesProps) => {
             value={localNotes.challenges}
             onChange={(e) => handleChange('challenges', e.target.value)}
             placeholder="What obstacles did you encounter?"
-            className="notes-textarea"
+            className="w-full min-h-[100px] p-3 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-foreground/20 resize-y"
           />
         </div>
 
@@ -83,7 +83,7 @@ export const Notes = ({ notes, onSave }: NotesProps) => {
             value={localNotes.improvements}
             onChange={(e) => handleChange('improvements', e.target.value)}
             placeholder="How will you do better?"
-            className="notes-textarea"
+            className="w-full min-h-[100px] p-3 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-foreground/20 resize-y"
           />
         </div>
       </div>

@@ -44,7 +44,7 @@ export const Sidebar = ({
   const [showThemes, setShowThemes] = useState(false);
 
   return (
-    <aside className="w-full space-y-6 hidden lg:block">
+    <aside className="w-full space-y-6">
       {/* Quick Stats */}
       <div className="bento-card p-6 reveal stagger-2">
         <span className="sidebar-header">Global Statistics</span>

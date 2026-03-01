@@ -126,7 +126,7 @@ const Index = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
           {/* Progress Dock (Bento Sidebar) */}
-          <div className="lg:col-span-3 space-y-6">
+          <div className="lg:col-span-3 space-y-6 order-2 lg:order-1 mt-12 lg:mt-0">
             <div className="bento-card p-6 reveal stagger-1">
               <span className="sidebar-header">Week {weekData.weekNumber} Progress</span>
               <div className="text-4xl font-black mb-4">{Math.round(weekProgress)}%</div>
@@ -148,7 +148,7 @@ const Index = () => {
           </div>
 
           {/* Main Task Grid */}
-          <div className="lg:col-span-9 space-y-6">
+          <div className="lg:col-span-9 space-y-6 order-1 lg:order-2">
             <div className="reveal stagger-1">
               <WeekHeader
                 week={weekData}
@@ -217,7 +217,7 @@ const Index = () => {
         </div>
 
         <footer className="mt-32 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 reveal">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">© 2024 MASTENHQ — No compromise Journey</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">© 2026 MASTENHQ — No compromise Journey</p>
           <div className="flex gap-8 text-[10px] font-black uppercase tracking-[0.2em]">
             <span className="text-foreground">頑張りましょう</span>
             <span className="text-muted-foreground">Kyoto • Tokyo • Osaka</span>
