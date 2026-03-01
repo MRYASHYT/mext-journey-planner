@@ -24,12 +24,11 @@ const quickLinks = [
 ];
 
 const milestones = [
-  { week: 10, label: 'Week 10' },
-  { week: 24, label: 'Genki I Complete' },
-  { week: 32, label: 'JLPT N5' },
-  { week: 52, label: 'Year 1 Complete' },
-  { week: 104, label: 'JLPT N3' },
-  { week: 175, label: 'Depart for Japan!' },
+  { week: 16, label: 'Foundations Done' },
+  { week: 36, label: 'Core Complete' },
+  { week: 75, label: 'Advanced Research' },
+  { week: 95, label: 'MEXT Submitted' },
+  { week: 113, label: 'Depart for Japan!' },
 ];
 
 export const Sidebar = ({
@@ -44,71 +43,32 @@ export const Sidebar = ({
   const [showThemes, setShowThemes] = useState(false);
 
   return (
-    <aside className="w-64 flex-shrink-0 space-y-4 hidden lg:block">
-      {/* Financial Responsibility */}
-      <div className="glass-card p-4">
-        <div className="sidebar-title">
-          <Flame className="w-4 h-4 text-orange-500" />
-          財務責任 · Financial Responsibility
-        </div>
-        <div className="stat-card">
-          <p className="text-xs text-muted-foreground mb-1">Monthly Mandatory Range</p>
-          <p className="text-sm font-bold text-foreground">₹5,000 - ₹10,000</p>
-        </div>
-      </div>
-
+    <aside className="w-full space-y-6 hidden lg:block">
       {/* Quick Stats */}
-      <div className="glass-card p-4">
-        <div className="sidebar-title">
-          <BarChart3 className="w-4 h-4" />
-          クイック統計 · Quick Stats
-        </div>
-
-        <div className="space-y-3">
-          <div className="stat-card">
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-xs text-muted-foreground">This Week</span>
-              <span className="text-sm font-semibold">{Math.round(weekProgress)}%</span>
+      <div className="bento-card p-6 reveal stagger-2">
+        <span className="sidebar-header">Global Statistics</span>
+        <div className="space-y-6">
+          <div className="flex border-b border-border pb-4 last:border-0 last:pb-0 justify-between items-end">
+            <div>
+              <span className="text-[10px] font-bold text-muted-foreground uppercase">Streak</span>
+              <div className="text-xl font-black">{streak} <span className="text-[10px]">Days</span></div>
             </div>
-            <div className="progress-bar h-1.5">
-              <div className="progress-fill bg-primary" style={{ width: `${weekProgress}%` }} />
-            </div>
+            <Flame className={cn("w-6 h-6", streak > 0 ? "text-foreground" : "text-muted-foreground/20")} />
           </div>
 
-          <div className="stat-card">
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-xs text-muted-foreground">This Month</span>
-              <span className="text-sm font-semibold">{Math.round(monthProgress)}%</span>
-            </div>
-            <div className="progress-bar h-1.5">
-              <div className="progress-fill bg-accent" style={{ width: `${monthProgress}%` }} />
-            </div>
-          </div>
-
-          <div className="stat-card">
-            <div className="flex justify-between items-center">
-              <span className="text-xs text-muted-foreground">Journey</span>
-              <span className="text-sm font-semibold">{weeksCompleted}/{totalWeeks} weeks</span>
-            </div>
-          </div>
-
-          <div className="stat-card flex items-center justify-between">
-            <span className="text-xs text-muted-foreground">Streak</span>
-            <div className="flex items-center gap-1">
-              <Flame className={cn("w-4 h-4", streak > 0 ? "text-orange-500 fire-emoji" : "text-muted-foreground")} />
-              <span className="text-sm font-bold">{streak} days</span>
+          <div className="flex border-b border-border pb-4 last:border-0 last:pb-0 justify-between items-end">
+            <div>
+              <span className="text-[10px] font-bold text-muted-foreground uppercase">Journey</span>
+              <div className="text-xl font-black">{weeksCompleted}<span className="text-muted-foreground font-medium">/</span>{totalWeeks}</div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Milestones */}
-      <div className="glass-card p-4">
-        <div className="sidebar-title">
-          <Target className="w-4 h-4" />
-          マイルストーン · Milestones
-        </div>
-        <div className="space-y-2">
+      <div className="bento-card p-6 reveal stagger-3">
+        <span className="sidebar-header">Mastery Milestones</span>
+        <div className="space-y-4">
           {milestones.map(m => {
             const isCompleted = currentWeek.weekNumber >= m.week;
             const isCurrent = currentWeek.weekNumber >= m.week - 5 && currentWeek.weekNumber < m.week;
@@ -117,16 +77,16 @@ export const Sidebar = ({
               <div
                 key={m.week}
                 className={cn(
-                  "flex items-center gap-2 text-sm py-1",
-                  isCompleted ? "text-primary" : isCurrent ? "text-foreground" : "text-muted-foreground"
+                  "flex items-center gap-3 text-[10px] font-bold uppercase transition-all",
+                  isCompleted ? "text-foreground/40" : isCurrent ? "text-foreground" : "text-muted-foreground/20"
                 )}
               >
-                <span className={cn(
-                  "w-4 h-4 rounded-full border-2 flex items-center justify-center text-[10px]",
-                  isCompleted ? "bg-primary border-primary text-primary-foreground" : "border-border"
+                <div className={cn(
+                  "w-4 h-4 border flex items-center justify-center text-[8px]",
+                  isCompleted ? "bg-foreground border-foreground text-background" : "border-border"
                 )}>
-                  {isCompleted && "✓"}
-                </span>
+                  {/* Bubble style - no X */}
+                </div>
                 <span className={cn(isCompleted && "line-through")}>{m.label}</span>
               </div>
             );
@@ -134,55 +94,29 @@ export const Sidebar = ({
         </div>
       </div>
 
-      {/* Quick Links */}
-      <div className="glass-card p-4">
-        <div className="sidebar-title">
-          <Link2 className="w-4 h-4" />
-          クイックリンク · Quick Links
-        </div>
-        <div className="space-y-1">
-          {quickLinks.map(link => (
-            <a
-              key={link.name}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="quick-link"
-            >
-              <span>•</span>
-              {link.name}
-            </a>
-          ))}
-        </div>
-      </div>
-
       {/* Theme Selector */}
-      <div className="glass-card p-4">
+      <div className="bento-card p-6 reveal stagger-4">
         <button
           onClick={() => setShowThemes(!showThemes)}
-          className="sidebar-title w-full justify-between cursor-pointer hover:text-foreground transition-colors"
+          className="flex items-center justify-between w-full group"
         >
-          <div className="flex items-center gap-2">
-            <Palette className="w-4 h-4" />
-            テーマ · Theme
-          </div>
+          <span className="sidebar-header !mb-0 group-hover:text-foreground transition-colors">Interface Theme</span>
           <span className="text-xs">{themes.find(t => t.id === theme)?.emoji}</span>
         </button>
 
         {showThemes && (
-          <div className="space-y-1 mt-2">
+          <div className="grid grid-cols-2 gap-2 mt-6 animate-in fade-in slide-in-from-top-2 duration-300">
             {themes.map(t => (
               <button
                 key={t.id}
                 onClick={() => changeTheme(t.id)}
-                className={cn("theme-btn", theme === t.id && "active")}
+                className={cn(
+                  "p-3 border flex flex-col items-center gap-2 hover:border-foreground transition-all",
+                  theme === t.id ? "border-foreground bg-muted" : "border-border"
+                )}
               >
-                <div
-                  className="theme-dot"
-                  style={{ background: `linear-gradient(135deg, ${t.colors[0]}, ${t.colors[1]})` }}
-                />
-                <span className="flex-1 text-left">{t.name}</span>
-                <span>{t.emoji}</span>
+                <span className="text-xs font-black uppercase text-[10px]">{t.name}</span>
+                <span className="text-sm">{t.emoji}</span>
               </button>
             ))}
           </div>
@@ -190,7 +124,10 @@ export const Sidebar = ({
       </div>
 
       {/* Sync / Auth */}
-      <Auth />
+      <div className="reveal stagger-5">
+        <Auth />
+      </div>
     </aside>
   );
 };
+

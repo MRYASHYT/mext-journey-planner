@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export type Theme = 'sakura' | 'ocean' | 'dark' | 'sunshine' | 'forest' | 'japan';
+export type Theme = 'light' | 'dark';
 
 export interface ThemeConfig {
   id: Theme;
@@ -10,18 +10,14 @@ export interface ThemeConfig {
 }
 
 export const themes: ThemeConfig[] = [
-  { id: 'sakura', name: 'Sakura', emoji: '🌸', colors: ['#FF69B4', '#FFB6C1'] },
-  { id: 'ocean', name: 'Ocean Blue', emoji: '🌊', colors: ['#4A90E2', '#7BB3FF'] },
-  { id: 'dark', name: 'Dark Mode', emoji: '🌙', colors: ['#9D4EDD', '#7209B7'] },
-  { id: 'sunshine', name: 'Sunshine', emoji: '☀️', colors: ['#FFB347', '#FF8C00'] },
-  { id: 'forest', name: 'Forest Green', emoji: '🌲', colors: ['#3CB371', '#2E8B57'] },
-  { id: 'japan', name: 'Japanese Flag', emoji: '🎌', colors: ['#DC143C', '#FFFFFF'] },
+  { id: 'light', name: 'Alabaster', emoji: '⬜', colors: ['#FFFFFF', '#F4F4F5'] },
+  { id: 'dark', name: 'Noir', emoji: '⬛', colors: ['#0A0A0A', '#171717'] },
 ];
 
 const THEME_KEY = 'mext-theme';
 
 export const useTheme = () => {
-  const [theme, setTheme] = useState<Theme>('sakura');
+  const [theme, setTheme] = useState<Theme>('light');
 
   useEffect(() => {
     const stored = localStorage.getItem(THEME_KEY) as Theme | null;

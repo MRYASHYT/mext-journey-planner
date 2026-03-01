@@ -16,6 +16,7 @@ const Index = () => {
     currentWeek,
     setCurrentWeek,
     toggleDailyTask,
+    toggleDay,
     getWeekDailyTasks,
     getTaskCompletionForWeek,
     calculateOverallProgress,
@@ -47,6 +48,13 @@ const Index = () => {
 
   const allTasks = [...weekData.japanese, ...weekData.aiml, ...weekData.college, ...weekData.goals];
   const weekProgress = getTaskCompletionForWeek(currentWeek, allTasks).percentage;
+
+  const daysCompleted = Array(7).fill(false).map((_, dayIndex) => {
+    return allTasks.length > 0 && allTasks.every(task => {
+      const taskDays = dailyTasks[task.id];
+      return taskDays && taskDays[dayIndex];
+    });
+  });
 
   const handleDownloadPDF = () => {
     const doc = new jsPDF();
@@ -84,97 +92,139 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="fixed inset-0 bg-gradient-theme pointer-events-none" />
-
-      <div className="relative max-w-7xl mx-auto px-4 py-6">
-        {/* Header */}
-        <header className="text-center mb-6 fade-in">
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <Plane className="w-7 h-7 text-primary" />
-            <h1 className="text-2xl sm:text-3xl font-bold text-gradient">MEXT Journey Tracker</h1>
-            <Sparkles className="w-5 h-5 text-accent" />
+    <div className="min-h-screen bg-background relative selection:bg-foreground selection:text-background">
+      <div className="max-w-[1600px] mx-auto px-6 py-12">
+        {/* Minimalist Navigation */}
+        <nav className="relative z-50 flex justify-between items-end mb-16 reveal">
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-8 h-8 bg-foreground flex items-center justify-center">
+                <Plane className="w-5 h-5 text-background" />
+              </div>
+              <h1 className="text-3xl font-black uppercase tracking-tighter">MASTENHQ</h1>
+            </div>
+            <p className="text-[10px] uppercase font-bold tracking-[0.3em] text-muted-foreground">Japanese Academic Roadmap</p>
           </div>
-          <p className="text-sm text-muted-foreground">Your Complete Roadmap to AI/ML Master's in Japan</p>
-        </header>
+          <div className="flex items-center gap-8">
+            <div className="text-right hidden sm:block">
+              <span className="sidebar-header mb-1">Global Mastery</span>
+              <span className="text-2xl font-black">{Math.round(overallProgress)}%</span>
+            </div>
+            <div className="flex gap-2">
+              <WeekSelector currentWeek={currentWeek} onSelectWeek={setCurrentWeek} />
+              <button
+                onClick={handleDownloadPDF}
+                className="w-10 h-10 border border-foreground flex items-center justify-center hover:bg-foreground hover:text-background transition-all"
+              >
+                <Sparkles className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </nav>
 
-        {/* Week selector */}
-        <div className="flex justify-end mb-4">
-          <WeekSelector currentWeek={currentWeek} onSelectWeek={setCurrentWeek} />
-        </div>
+        {/* Bento Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
-        {/* Week Header */}
-        <WeekHeader
-          week={weekData}
-          currentWeek={currentWeek}
-          totalWeeks={totalWeeks}
-          onPreviousWeek={() => setCurrentWeek(Math.max(1, currentWeek - 1))}
-          onNextWeek={() => setCurrentWeek(Math.min(totalWeeks, currentWeek + 1))}
-          overallProgress={overallProgress}
-        />
+          {/* Progress Dock (Bento Sidebar) */}
+          <div className="lg:col-span-3 space-y-6">
+            <div className="bento-card p-6 reveal stagger-1">
+              <span className="sidebar-header">Week {weekData.weekNumber} Progress</span>
+              <div className="text-4xl font-black mb-4">{Math.round(weekProgress)}%</div>
+              <div className="progress-bar-minimal">
+                <div className="progress-fill-minimal" style={{ width: `${weekProgress}%` }} />
+              </div>
+            </div>
 
-        {/* Main Layout */}
-        <div className="flex gap-6 mt-6">
-          <Sidebar
-            weekProgress={weekProgress}
-            monthProgress={weekProgress}
-            weeksCompleted={getWeeksCompleted()}
-            totalWeeks={totalWeeks}
-            streak={streak}
-            currentWeek={weekData}
-          />
+            <div className="reveal stagger-2">
+              <Sidebar
+                weekProgress={weekProgress}
+                monthProgress={weekProgress}
+                weeksCompleted={getWeeksCompleted()}
+                totalWeeks={totalWeeks}
+                streak={streak}
+                currentWeek={weekData}
+              />
+            </div>
+          </div>
 
-          {/* Main Content */}
-          <div className="flex-1 space-y-6">
-            <DailyTaskGrid
-              title="日本語学習 · Japanese Learning"
-              icon={<BookOpen className="w-5 h-5" />}
-              tasks={weekData.japanese}
-              category="japanese"
-              dailyTasks={dailyTasks}
-              onToggle={(taskId, dayIndex) => toggleDailyTask(currentWeek, taskId, dayIndex)}
-            />
+          {/* Main Task Grid */}
+          <div className="lg:col-span-9 space-y-6">
+            <div className="reveal stagger-1">
+              <WeekHeader
+                week={weekData}
+                currentWeek={currentWeek}
+                totalWeeks={totalWeeks}
+                onPreviousWeek={() => setCurrentWeek(Math.max(1, currentWeek - 1))}
+                onNextWeek={() => setCurrentWeek(Math.min(totalWeeks, currentWeek + 1))}
+                overallProgress={overallProgress}
+                daysCompleted={daysCompleted}
+                onToggleDay={(dayIndex, isCompleted) => toggleDay(currentWeek, dayIndex, isCompleted)}
+              />
+            </div>
 
-            <DailyTaskGrid
-              title="AI/ML作業 · AI/ML Work"
-              icon={<Brain className="w-5 h-5" />}
-              tasks={weekData.aiml}
-              category="aiml"
-              dailyTasks={dailyTasks}
-              onToggle={(taskId, dayIndex) => toggleDailyTask(currentWeek, taskId, dayIndex)}
-            />
+            <div className="grid grid-cols-1 gap-6">
+              <div className="reveal stagger-2">
+                <DailyTaskGrid
+                  title="日本語学習 · Japanese Learning"
+                  icon={<BookOpen className="w-4 h-4" />}
+                  tasks={weekData.japanese}
+                  category="japanese"
+                  dailyTasks={dailyTasks}
+                  onToggle={(taskId, dayIndex) => toggleDailyTask(currentWeek, taskId, dayIndex)}
+                />
+              </div>
 
-            <DailyTaskGrid
-              title="大学の課題 · College Work"
-              icon={<GraduationCap className="w-5 h-5" />}
-              tasks={weekData.college}
-              category="college"
-              dailyTasks={dailyTasks}
-              onToggle={(taskId, dayIndex) => toggleDailyTask(currentWeek, taskId, dayIndex)}
-            />
+              <div className="reveal stagger-3">
+                <DailyTaskGrid
+                  title="AI/ML作業 · AI/ML Work"
+                  icon={<Brain className="w-4 h-4" />}
+                  tasks={weekData.aiml}
+                  category="aiml"
+                  dailyTasks={dailyTasks}
+                  onToggle={(taskId, dayIndex) => toggleDailyTask(currentWeek, taskId, dayIndex)}
+                />
+              </div>
 
-            <DailyTaskGrid
-              title="今週の目標 · Weekly Goals"
-              icon={<Target className="w-5 h-5" />}
-              tasks={weekData.goals}
-              category="goals"
-              dailyTasks={dailyTasks}
-              onToggle={(taskId, dayIndex) => toggleDailyTask(currentWeek, taskId, dayIndex)}
-            />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="reveal stagger-4">
+                  <DailyTaskGrid
+                    title="大学 · College"
+                    icon={<GraduationCap className="w-4 h-4" />}
+                    tasks={weekData.college}
+                    category="college"
+                    dailyTasks={dailyTasks}
+                    onToggle={(taskId, dayIndex) => toggleDailyTask(currentWeek, taskId, dayIndex)}
+                  />
+                </div>
+                <div className="reveal stagger-5">
+                  <DailyTaskGrid
+                    title="目標 · Goals"
+                    icon={<Target className="w-4 h-4" />}
+                    tasks={weekData.goals}
+                    category="goals"
+                    dailyTasks={dailyTasks}
+                    onToggle={(taskId, dayIndex) => toggleDailyTask(currentWeek, taskId, dayIndex)}
+                  />
+                </div>
+              </div>
+            </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 reveal stagger-5">
               <Notes notes={weekNotes} onSave={(n) => updateWeekNotes(currentWeek, n)} />
               <WeekSummary week={weekData} dailyTasks={dailyTasks} streak={streak} onDownloadPDF={handleDownloadPDF} />
             </div>
           </div>
         </div>
 
-        <footer className="mt-12 text-center text-sm text-muted-foreground">
-          <p>頑張りましょう! (Ganbare!) — Good luck on your MEXT journey!</p>
+        <footer className="mt-32 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 reveal">
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">© 2024 MASTENHQ — No compromise Journey</p>
+          <div className="flex gap-8 text-[10px] font-black uppercase tracking-[0.2em]">
+            <span className="text-foreground">頑張りましょう</span>
+            <span className="text-muted-foreground">Kyoto • Tokyo • Osaka</span>
+          </div>
         </footer>
       </div>
 
-      {/* AI Chatbot */}
       <Chatbot
         weekData={weekData}
         onAddTask={handleAddTask}

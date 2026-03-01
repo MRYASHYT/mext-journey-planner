@@ -22,16 +22,16 @@ export interface WeekData {
   milestone?: string;
 }
 
-// Helper to generate dates
+// Helper to generate dates starting from March 1, 2026
 const getWeekDates = (weekNum: number) => {
-  const startDate = new Date(2024, 11, 1); // Dec 1, 2024
+  const startDate = new Date(2026, 2, 1); // March 1, 2026
   startDate.setDate(startDate.getDate() + (weekNum - 1) * 7);
   const endDate = new Date(startDate);
   endDate.setDate(endDate.getDate() + 6);
-  
-  const months = ['January', 'February', 'March', 'April', 'May', 'June', 
-                  'July', 'August', 'September', 'October', 'November', 'December'];
-  
+
+  const months = ['January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'];
+
   return {
     startDate: `${startDate.getDate()} ${months[startDate.getMonth()]}`,
     endDate: `${endDate.getDate()} ${months[endDate.getMonth()]}`,
@@ -40,12 +40,15 @@ const getWeekDates = (weekNum: number) => {
   };
 };
 
-// Generate all 175+ weeks
 export const generateWeeklyData = (): WeekData[] => {
   const weeks: WeekData[] = [];
-  
-  // December 2024 (Weeks 1-4) - Foundations
-  for (let w = 1; w <= 4; w++) {
+
+  // ============================================
+  // Phase 1: Foundations (Mapped from Orig Weeks 1-24 to New 1-16)
+  // ============================================
+
+  // Orig W1-4 -> New W1-3
+  for (let w = 1; w <= 3; w++) {
     const dates = getWeekDates(w);
     weeks.push({
       weekNumber: w,
@@ -79,8 +82,8 @@ export const generateWeeklyData = (): WeekData[] => {
     });
   }
 
-  // January 2025 (Weeks 5-8) - Foundations
-  for (let w = 5; w <= 8; w++) {
+  // Orig W5-8 -> New W4-6
+  for (let w = 4; w <= 6; w++) {
     const dates = getWeekDates(w);
     weeks.push({
       weekNumber: w,
@@ -120,8 +123,8 @@ export const generateWeeklyData = (): WeekData[] => {
     });
   }
 
-  // February 2025 (Weeks 9-12)
-  for (let w = 9; w <= 12; w++) {
+  // Orig W9-12 -> New W7-9
+  for (let w = 7; w <= 9; w++) {
     const dates = getWeekDates(w);
     weeks.push({
       weekNumber: w,
@@ -157,62 +160,55 @@ export const generateWeeklyData = (): WeekData[] => {
     });
   }
 
-  // March-May 2025 (Weeks 13-24)
-  for (let w = 13; w <= 24; w++) {
+  // Orig W13-24 -> New W10-16
+  for (let w = 10; w <= 16; w++) {
     const dates = getWeekDates(w);
-    const month = dates.month;
-    let focus = "";
-    let milestone = "";
-    
-    if (w <= 16) focus = "NumPy/Pandas + Genki I Progress";
-    else if (w <= 20) focus = "Andrew Ng ML Course + Genki I";
-    else {
-      focus = "ML Projects + Complete Genki I";
-      if (w === 24) milestone = "Foundation Phase Complete!";
-    }
-    
+    let focus = w <= 12 ? "NumPy/Pandas + Genki I Progress" : w <= 14 ? "Andrew Ng ML Course + Genki I" : "ML Projects + Complete Genki I";
     weeks.push({
       weekNumber: w,
       ...dates,
       phase: "Foundations",
       focus,
-      milestone,
+      milestone: w === 16 ? "Foundation Phase Complete!" : undefined,
       japanese: [
         { id: `w${w}-jp-1`, text: "Anki review (20 min/day)", schedule: "Daily" },
-        { id: `w${w}-jp-2`, text: w <= 20 ? "Genki I study (35 min)" : "Complete Genki I / Start Genki II", schedule: "Mon/Wed/Fri/Sat" },
+        { id: `w${w}-jp-2`, text: w <= 14 ? "Genki I study (35 min)" : "Complete Genki I / Start Genki II", schedule: "Mon/Wed/Fri/Sat" },
         { id: `w${w}-jp-3`, text: "Duolingo", schedule: "Daily 15 min" },
         { id: `w${w}-jp-4`, text: "Japanese immersion (anime/YouTube)", schedule: "Daily 30 min" },
-        { id: `w${w}-jp-5`, text: w >= 21 ? "Register for JLPT N5 (July exam)" : "Conversation practice on HelloTalk", link: w >= 21 ? "https://www.jlpt.jp/e/" : "https://www.hellotalk.com/", linkText: w >= 21 ? "JLPT" : "HelloTalk" },
+        { id: `w${w}-jp-5`, text: w >= 15 ? "Register for JLPT N5 (July exam)" : "Conversation practice on HelloTalk", link: w >= 15 ? "https://www.jlpt.jp/e/" : "https://www.hellotalk.com/", linkText: w >= 15 ? "JLPT" : "HelloTalk" },
       ],
       aiml: [
-        { id: `w${w}-ai-1`, text: `Andrew Ng ML Course Week ${Math.min(Math.floor((w-13)/2)+1, 8)}`, schedule: "Tue/Thu/Sat", link: "https://www.coursera.org/learn/machine-learning", linkText: "Coursera" },
-        { id: `w${w}-ai-2`, text: w <= 16 ? "NumPy/Pandas tutorials" : "Data visualization: Matplotlib + Seaborn", schedule: "Mon/Wed/Fri", link: w <= 16 ? "https://numpy.org/doc/stable/user/quickstart.html" : "https://matplotlib.org/stable/tutorials/index.html", linkText: w <= 16 ? "NumPy" : "Matplotlib" },
+        { id: `w${w}-ai-1`, text: `Andrew Ng ML Course Week ${Math.min(Math.floor((w - 10) / 2) + 1, 8)}`, schedule: "Tue/Thu/Sat", link: "https://www.coursera.org/learn/machine-learning", linkText: "Coursera" },
+        { id: `w${w}-ai-2`, text: w <= 12 ? "NumPy/Pandas tutorials" : "Data visualization: Matplotlib + Seaborn", schedule: "Mon/Wed/Fri", link: w <= 12 ? "https://numpy.org/doc/stable/user/quickstart.html" : "https://matplotlib.org/stable/tutorials/index.html", linkText: w <= 12 ? "NumPy" : "Matplotlib" },
         { id: `w${w}-ai-3`, text: "Build ML project", schedule: "Weekend" },
         { id: `w${w}-ai-4`, text: "GitHub: Upload projects with proper README", link: "https://github.com/", linkText: "GitHub" },
       ],
       college: [
         { id: `w${w}-col-1`, text: "College", schedule: "Mon/Wed/Fri" },
-        { id: `w${w}-col-2`, text: w >= 21 ? "Final exams - Give 100%" : "Semester project work" },
+        { id: `w${w}-col-2`, text: w >= 15 ? "Final exams - Give 100%" : "Semester project work" },
         { id: `w${w}-col-3`, text: "Aim for 8.5+ GPA this semester" },
       ],
       goals: [
-        { id: `w${w}-goal-1`, text: `${600 + (w-13) * 50} vocabulary words target` },
-        { id: `w${w}-goal-2`, text: w >= 21 ? "Complete Andrew Ng ML Course" : "Andrew Ng course progress" },
-        { id: `w${w}-goal-3`, text: `${2 + Math.floor((w-13)/4)} ML projects on GitHub` },
+        { id: `w${w}-goal-1`, text: `${600 + (w - 10) * 50} vocabulary words target` },
+        { id: `w${w}-goal-2`, text: w >= 15 ? "Complete Andrew Ng ML Course" : "Andrew Ng course progress" },
+        { id: `w${w}-goal-3`, text: `${2 + Math.floor((w - 10) / 4)} ML projects on GitHub` },
       ],
     });
   }
 
-  // June-July 2025 Summer Break (Weeks 25-32) - Core Building
-  for (let w = 25; w <= 32; w++) {
+  // ============================================
+  // Phase 2: Core Building (Mapped from Orig Weeks 25-52 to New 17-36)
+  // ============================================
+
+  // Orig W25-32 -> New W17-22
+  for (let w = 17; w <= 22; w++) {
     const dates = getWeekDates(w);
-    const isJuly = w >= 29;
+    const isJuly = w >= 20;
     weeks.push({
       weekNumber: w,
       ...dates,
       phase: "Core Building",
       focus: isJuly ? "Deep Learning Projects + JLPT N5 Exam" : "Deep Learning + JLPT N5 Prep",
-      milestone: isJuly && w === 32 ? "First JLPT certificate!" : undefined,
       japanese: [
         { id: `w${w}-jp-1`, text: "Anki review (20 min/day)", schedule: "Daily - NO EXCEPTIONS" },
         { id: `w${w}-jp-2`, text: "Genki II intensive study (1 hour)", schedule: "Daily" },
@@ -222,7 +218,7 @@ export const generateWeeklyData = (): WeekData[] => {
         { id: `w${w}-jp-6`, text: "HelloTalk language exchange", schedule: "3x per week", link: "https://www.hellotalk.com/", linkText: "HelloTalk" },
       ],
       aiml: [
-        { id: `w${w}-ai-1`, text: `fast.ai Practical Deep Learning Lesson ${w <= 28 ? w-24 : w-26}`, schedule: "Daily 2 hours", link: "https://course.fast.ai/", linkText: "fast.ai" },
+        { id: `w${w}-ai-1`, text: `fast.ai Practical Deep Learning Lesson ${w <= 19 ? w - 16 : w - 18}`, schedule: "Daily 2 hours", link: "https://course.fast.ai/", linkText: "fast.ai" },
         { id: `w${w}-ai-2`, text: isJuly ? "Build personal project: Image/Sentiment classifier" : "Build image classifier project" },
         { id: `w${w}-ai-3`, text: isJuly ? "Deploy project on Hugging Face Spaces" : "Read research papers", link: isJuly ? "https://huggingface.co/spaces" : "https://arxiv.org/list/cs.LG/recent", linkText: isJuly ? "Hugging Face" : "arXiv" },
         { id: `w${w}-ai-4`, text: "Daily GitHub contributions" },
@@ -233,49 +229,48 @@ export const generateWeeklyData = (): WeekData[] => {
         { id: `w${w}-col-2`, text: "Use this time for intensive learning (6-8 hours/day)" },
       ],
       goals: [
-        { id: `w${w}-goal-1`, text: `fast.ai Lessons ${w <= 28 ? '1-4' : '5-7'} completed` },
-        { id: `w${w}-goal-2`, text: `${1300 + (w-25) * 100} vocabulary words` },
+        { id: `w${w}-goal-1`, text: `fast.ai Lessons ${w <= 19 ? '1-4' : '5-7'} completed` },
+        { id: `w${w}-goal-2`, text: `${1300 + (w - 17) * 100} vocabulary words` },
         { id: `w${w}-goal-3`, text: isJuly ? "1 deployed Deep Learning project" : "Deep Learning project built" },
         { id: `w${w}-goal-4`, text: isJuly ? "JLPT N5 PASSED!" : "JLPT N5 practice score: 70%+" },
       ],
     });
   }
 
-  // August-December 2025 (Weeks 33-52)
-  for (let w = 33; w <= 52; w++) {
+  // Orig W33-52 -> New W23-36
+  for (let w = 23; w <= 36; w++) {
     const dates = getWeekDates(w);
     let focus = "";
-    let phase = "Core Building";
     let milestone = "";
 
-    if (w <= 36) focus = "Advanced Projects + JLPT N4 Prep";
-    else if (w <= 40) focus = "Advanced ML + N4 Preparation";
-    else if (w <= 44) focus = "Project Deployment + N4 Prep";
-    else if (w <= 48) focus = "TOEFL + N4 Final Prep";
+    if (w <= 26) focus = "Advanced Projects + JLPT N4 Prep";
+    else if (w <= 29) focus = "Advanced ML + N4 Preparation";
+    else if (w <= 32) focus = "Project Deployment + N4 Prep";
+    else if (w <= 34) focus = "TOEFL + N4 Final Prep";
     else {
       focus = "JLPT N4 Exam + Year Review";
-      if (w === 52) milestone = "Year 1 Complete! JLPT N4 + TOEFL achieved!";
+      if (w === 36) milestone = "Core Mastery Achieved! JLPT N4 + TOEFL achieved!";
     }
 
-    const isTOEFLPrep = w >= 45 && w <= 48;
-    const isN4Exam = w >= 49;
+    const isTOEFLPrep = w >= 33 && w <= 34;
+    const isN4Exam = w >= 35;
 
     weeks.push({
       weekNumber: w,
       ...dates,
-      phase,
+      phase: "Core Building",
       focus,
       milestone,
       japanese: [
         { id: `w${w}-jp-1`, text: "Anki review (20 min/day)", schedule: "Daily" },
         { id: `w${w}-jp-2`, text: isN4Exam ? "Final N4 preparation / TAKE JLPT N4 EXAM" : "JLPT N4 preparation / Intermediate textbook", schedule: isN4Exam ? "Daily intensive" : "Mon-Sat" },
         { id: `w${w}-jp-3`, text: "Listening: Japanese podcasts", schedule: "Daily 30 min" },
-        { id: `w${w}-jp-4`, text: w >= 41 ? "Kanji study: 300+ learned" : "NHK Easy News reading", link: w >= 41 ? "https://www.wanikani.com/" : "https://www3.nhk.or.jp/news/easy/", linkText: w >= 41 ? "WaniKani" : "NHK Easy" },
+        { id: `w${w}-jp-4`, text: w >= 28 ? "Kanji study: 300+ learned" : "NHK Easy News reading", link: w >= 28 ? "https://www.wanikani.com/" : "https://www3.nhk.or.jp/news/easy/", linkText: w >= 28 ? "WaniKani" : "NHK Easy" },
       ],
       aiml: [
         { id: `w${w}-ai-1`, text: isTOEFLPrep ? "Maintain GitHub streak" : "Real-world project development", schedule: isTOEFLPrep ? "Daily" : "Mon-Sat 1.5 hours" },
-        { id: `w${w}-ai-2`, text: w <= 36 ? "Create portfolio website" : "Kaggle competition", link: w <= 36 ? "https://pages.github.com/" : "https://www.kaggle.com/", linkText: w <= 36 ? "GitHub Pages" : "Kaggle" },
-        { id: `w${w}-ai-3`, text: w <= 40 ? "MLOps basics: Docker" : "Portfolio polish", link: "https://docs.docker.com/get-started/", linkText: "Docker" },
+        { id: `w${w}-ai-2`, text: w <= 26 ? "Create portfolio website" : "Kaggle competition", link: w <= 26 ? "https://pages.github.com/" : "https://www.kaggle.com/", linkText: w <= 26 ? "GitHub Pages" : "Kaggle" },
+        { id: `w${w}-ai-3`, text: w <= 29 ? "MLOps basics: Docker" : "Portfolio polish", link: "https://docs.docker.com/get-started/", linkText: "Docker" },
         { id: `w${w}-ai-4`, text: "Blog post / Paper reading", link: "https://paperswithcode.com/", linkText: "Papers with Code" },
       ],
       college: [
@@ -290,20 +285,22 @@ export const generateWeeklyData = (): WeekData[] => {
         { id: `w${w}-goal-4`, text: "Full practice test every weekend" },
         { id: `w${w}-goal-5`, text: "Target score: 90-100+" },
       ] : [
-        { id: `w${w}-goal-1`, text: `${2200 + (w-33) * 30} vocabulary words` },
+        { id: `w${w}-goal-1`, text: `${2200 + (w - 23) * 30} vocabulary words` },
         { id: `w${w}-goal-2`, text: isN4Exam ? "JLPT N4 PASSED" : "N4 practice score: 80%+" },
-        { id: `w${w}-goal-3`, text: w <= 44 ? "Real-world project deployed" : "Kaggle Bronze medal target" },
+        { id: `w${w}-goal-3`, text: w <= 32 ? "Real-world project deployed" : "Kaggle Bronze medal target" },
         { id: `w${w}-goal-4`, text: "Strong semester finish" },
       ],
     });
   }
 
-  // 2026 (Weeks 53-104) - Advanced Building
-  for (let w = 53; w <= 104; w++) {
+  // ============================================
+  // Phase 3: Advanced Building (Mapped from Orig Weeks 53-104 to New 37-75)
+  // ============================================
+  for (let w = 37; w <= 75; w++) {
     const dates = getWeekDates(w);
-    const monthNum = Math.floor((w - 53) / 4);
+    const monthNum = Math.floor((w - 37) / 4);
     let focus = "";
-    
+
     if (monthNum < 3) focus = "Research Experience Start + N3 Prep";
     else if (monthNum < 6) focus = "Undergraduate Research + Specialization";
     else if (monthNum < 9) focus = "Paper Writing + N3 Progress";
@@ -314,7 +311,7 @@ export const generateWeeklyData = (): WeekData[] => {
       ...dates,
       phase: "Advanced Building",
       focus,
-      milestone: w === 104 ? "Year 2 Complete! JLPT N3 + Research Experience!" : undefined,
+      milestone: w === 75 ? "Advanced Research Phase Complete! JLPT N3 achieved!" : undefined,
       japanese: [
         { id: `w${w}-jp-1`, text: "Daily Anki (20 min)", schedule: "NEVER stop" },
         { id: `w${w}-jp-2`, text: "Intermediate textbook (Tobira/Quartet)", schedule: "45 min daily" },
@@ -334,9 +331,9 @@ export const generateWeeklyData = (): WeekData[] => {
         { id: `w${w}-col-3`, text: "Final year project" },
       ],
       goals: [
-        { id: `w${w}-goal-1`, text: `${3000 + (w-53) * 20} vocabulary words` },
+        { id: `w${w}-goal-1`, text: `${3000 + (w - 37) * 20} vocabulary words` },
         { id: `w${w}-goal-2`, text: "Research progress / Paper submission" },
-        { id: `w${w}-goal-3`, text: w >= 100 ? "JLPT N3 achieved" : "N3 preparation ongoing" },
+        { id: `w${w}-goal-3`, text: w >= 70 ? "JLPT N3 achieved" : "N3 preparation ongoing" },
       ],
       resources: [
         { title: "arXiv Preprints", url: "https://arxiv.org/" },
@@ -346,15 +343,17 @@ export const generateWeeklyData = (): WeekData[] => {
     });
   }
 
-  // 2027 Jan-Apr (Weeks 105-125) - Applications
-  for (let w = 105; w <= 125; w++) {
+  // ============================================
+  // Phase 4: Applications (Mapped from Orig Weeks 105-125 to New 76-95)
+  // ============================================
+  for (let w = 76; w <= 95; w++) {
     const dates = getWeekDates(w);
     weeks.push({
       weekNumber: w,
       ...dates,
       phase: "Applications",
       focus: "Professor Contact + MEXT Application",
-      milestone: w === 125 ? "BTech Graduation + MEXT Application Submitted!" : undefined,
+      milestone: w === 95 ? "BTech Graduation + MEXT Application Submitted!" : undefined,
       japanese: [
         { id: `w${w}-jp-1`, text: "N3 level maintenance (30 min/day)" },
         { id: `w${w}-jp-2`, text: "Conversational practice" },
@@ -364,12 +363,12 @@ export const generateWeeklyData = (): WeekData[] => {
       aiml: [
         { id: `w${w}-ai-1`, text: "Professor research (10-15 targets)" },
         { id: `w${w}-ai-2`, text: "Research proposal writing (5-7 pages)" },
-        { id: `w${w}-ai-3`, text: "Email professors (Jan-Apr)" },
+        { id: `w${w}-ai-3`, text: "Email professors" },
         { id: `w${w}-ai-4`, text: "Video call preparations" },
       ],
       college: [
         { id: `w${w}-col-1`, text: "Final semester excellence" },
-        { id: `w${w}-col-2`, text: "Graduate BTech (May 2027)" },
+        { id: `w${w}-col-2`, text: "Graduate BTech" },
         { id: `w${w}-col-3`, text: "Final year project completion" },
       ],
       goals: [
@@ -385,17 +384,19 @@ export const generateWeeklyData = (): WeekData[] => {
     });
   }
 
-  // 2027 May - 2028 Mar (Weeks 126-175) - Final Preparation
-  for (let w = 126; w <= 175; w++) {
+  // ============================================
+  // Phase 5: Final Prep (Mapped from Orig Weeks 126-175 to New 96-113)
+  // ============================================
+  for (let w = 96; w <= 113; w++) {
     const dates = getWeekDates(w);
     let focus = "";
     let milestone = "";
-    
-    if (w <= 135) focus = "Post-Graduation + Await MEXT Results";
-    else if (w <= 155) focus = "Visa Processing + Japan Preparation";
+
+    if (w <= 102) focus = "Post-Graduation + Await MEXT Results";
+    else if (w <= 108) focus = "Visa Processing + Japan Preparation";
     else {
       focus = "Final Preparations for Japan";
-      if (w === 175) milestone = "DEPART FOR JAPAN! 🇯🇵✈️";
+      if (w === 113) milestone = "DEPART FOR JAPAN! 🇯🇵✈️";
     }
 
     weeks.push({
@@ -415,12 +416,12 @@ export const generateWeeklyData = (): WeekData[] => {
         { id: `w${w}-ai-2`, text: "Prepare for lab meetings/presentations" },
         { id: `w${w}-ai-3`, text: "Review professor's recent publications" },
       ],
-      college: w <= 130 ? [
+      college: w <= 100 ? [
         { id: `w${w}-col-1`, text: "Graduation completed!" },
         { id: `w${w}-col-2`, text: "Collect all documents/transcripts" },
       ] : [],
-      goals: w <= 155 ? [
-        { id: `w${w}-goal-1`, text: w <= 135 ? "Await MEXT results (June-July)" : "Visa processing" },
+      goals: w <= 108 ? [
+        { id: `w${w}-goal-1`, text: w <= 102 ? "Await MEXT results (June-July)" : "Visa processing" },
         { id: `w${w}-goal-2`, text: "Financial preparation" },
         { id: `w${w}-goal-3`, text: "Research accommodation options" },
         { id: `w${w}-goal-4`, text: "Cultural research about Japan" },

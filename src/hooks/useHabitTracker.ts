@@ -196,6 +196,42 @@ export const useHabitTracker = () => {
     });
   }, []);
 
+  const toggleDay = useCallback((weekNumber: number, dayIndex: number, isCompleted: boolean) => {
+    setDailyTasks(prev => {
+      const existingWeekTasks = prev[weekNumber];
+      const weekTasks = existingWeekTasks ? { ...existingWeekTasks } : {};
+
+      const weekData = weeklyData.find(w => w.weekNumber === weekNumber);
+      if (!weekData) return prev;
+
+      const allTasks = [...weekData.japanese, ...weekData.aiml, ...weekData.college, ...weekData.goals];
+
+      let changed = false;
+      allTasks.forEach(task => {
+        const taskDays = [...(weekTasks[task.id] || [false, false, false, false, false, false, false])];
+        if (taskDays[dayIndex] === isCompleted) {
+          taskDays[dayIndex] = !isCompleted;
+          weekTasks[task.id] = taskDays;
+          changed = true;
+        }
+      });
+
+      if (changed && !isCompleted) {
+        const today = new Date().toISOString().split('T')[0];
+        const lastActivity = localStorage.getItem(LAST_ACTIVITY_KEY);
+        if (lastActivity !== today) {
+          const currentStreak = parseInt(localStorage.getItem(STREAK_KEY) || "0");
+          const newStreak = currentStreak + 1;
+          setStreak(newStreak);
+          localStorage.setItem(STREAK_KEY, newStreak.toString());
+          localStorage.setItem(LAST_ACTIVITY_KEY, today);
+        }
+      }
+
+      return changed ? { ...prev, [weekNumber]: weekTasks } : prev;
+    });
+  }, []);
+
   const getWeekDailyTasks = useCallback((weekNumber: number): DailyTasks => {
     return dailyTasks[weekNumber] || {};
   }, [dailyTasks]);
@@ -321,6 +357,7 @@ export const useHabitTracker = () => {
     currentWeek,
     setCurrentWeek,
     toggleDailyTask,
+    toggleDay,
     getWeekDailyTasks,
     getTaskCompletionForWeek,
     calculateOverallProgress,
