@@ -19,7 +19,7 @@ const AboutSection = () => {
         <div className={`text-center mb-16 transition-all duration-700 ${isVisible ? 'animate-fade-up' : 'opacity-0'}`}>
           <span className="text-accent text-xs tracking-[0.4em] uppercase font-body block mb-3">概要 · About</span>
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
-            About MASTENHQ
+            About MEXT Journey Planner
           </h2>
           <div className="w-16 h-0.5 bg-accent mx-auto" />
         </div>

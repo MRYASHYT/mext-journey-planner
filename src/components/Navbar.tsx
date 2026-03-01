@@ -25,8 +25,8 @@ const Navbar = () => {
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-card/95 backdrop-blur-md border-b border-border shadow-sm' : 'bg-transparent'}`}>
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
         <a href="#" className="font-heading text-lg font-bold tracking-tight transition-colors duration-300">
-          <span className={scrolled ? 'text-foreground' : 'text-white'}>MASTEN</span>
-          <span className="text-accent">HQ</span>
+          <span className={scrolled ? 'text-foreground' : 'text-white'}>MEXT</span>
+          <span className="text-accent space-x-1"> JOURNEY</span>
         </a>
 
         {/* Desktop */}
