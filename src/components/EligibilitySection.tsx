@@ -49,7 +49,7 @@ const EligibilitySection = () => {
             <ul className="space-y-4 text-sm text-muted-foreground">
               <li className="flex items-start gap-3">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" />
-                Family financial support of at least <strong className="text-foreground">₹20,000 per month</strong> is mandatory for groceries, utilities, and personal expenses.
+                Family financial support of at least <strong className="text-foreground">₹5,000 to ₹10,000 per month</strong> is mandatory for groceries, utilities, and personal expenses.
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" />
