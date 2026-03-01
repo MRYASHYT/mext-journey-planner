@@ -48,7 +48,7 @@ export const WeekHeader = ({
                     "w-10 h-10 sm:w-12 sm:h-12 shrink-0 snap-start border-2 flex items-center justify-center rounded-xl transition-all duration-300 font-bold text-xs uppercase hover:scale-110",
                     daysCompleted[ix]
                       ? "bg-foreground text-background border-foreground shadow-lg"
-                      : "border-border/40 text-muted-foreground hover:border-foreground/40"
+                      : "border-foreground/30 text-muted-foreground hover:border-foreground/60"
                   )}
                 >
                   {daysCompleted[ix] ? "✓" : day}

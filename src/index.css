@@ -125,7 +125,7 @@
   }
 
   .task-cell {
-    @apply w-12 h-12 border-2 border-border/20 flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 hover:border-foreground/40 rounded-xl;
+    @apply w-12 h-12 border-2 border-foreground/30 flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 hover:border-foreground/60 rounded-xl;
   }
 
   .task-cell.active {
