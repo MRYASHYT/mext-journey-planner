@@ -127,7 +127,7 @@ const Index = () => {
           {/* Main Content */}
           <div className="flex-1 space-y-6">
             <DailyTaskGrid
-              title="Japanese Learning"
+              title="日本語学習 · Japanese Learning"
               icon={<BookOpen className="w-5 h-5" />}
               tasks={weekData.japanese}
               category="japanese"
@@ -136,7 +136,7 @@ const Index = () => {
             />
 
             <DailyTaskGrid
-              title="AI/ML Work"
+              title="AI/ML作業 · AI/ML Work"
               icon={<Brain className="w-5 h-5" />}
               tasks={weekData.aiml}
               category="aiml"
@@ -145,7 +145,7 @@ const Index = () => {
             />
 
             <DailyTaskGrid
-              title="College Work"
+              title="大学の課題 · College Work"
               icon={<GraduationCap className="w-5 h-5" />}
               tasks={weekData.college}
               category="college"
@@ -154,7 +154,7 @@ const Index = () => {
             />
 
             <DailyTaskGrid
-              title="Weekly Goals"
+              title="今週の目標 · Weekly Goals"
               icon={<Target className="w-5 h-5" />}
               tasks={weekData.goals}
               category="goals"
@@ -170,7 +170,7 @@ const Index = () => {
         </div>
 
         <footer className="mt-12 text-center text-sm text-muted-foreground">
-          <p>頑張って! (Ganbatte!) — Good luck on your MEXT journey!</p>
+          <p>頑張りましょう! (Ganbare!) — Good luck on your MEXT journey!</p>
         </footer>
       </div>
 

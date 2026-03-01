@@ -45,11 +45,23 @@ export const Sidebar = ({
 
   return (
     <aside className="w-64 flex-shrink-0 space-y-4 hidden lg:block">
+      {/* Financial Responsibility */}
+      <div className="glass-card p-4">
+        <div className="sidebar-title">
+          <Flame className="w-4 h-4 text-orange-500" />
+          財務責任 · Financial Responsibility
+        </div>
+        <div className="stat-card">
+          <p className="text-xs text-muted-foreground mb-1">Monthly Mandatory Range</p>
+          <p className="text-sm font-bold text-foreground">₹5,000 - ₹10,000</p>
+        </div>
+      </div>
+
       {/* Quick Stats */}
       <div className="glass-card p-4">
         <div className="sidebar-title">
           <BarChart3 className="w-4 h-4" />
-          Quick Stats
+          クイック統計 · Quick Stats
         </div>
 
         <div className="space-y-3">
@@ -94,7 +106,7 @@ export const Sidebar = ({
       <div className="glass-card p-4">
         <div className="sidebar-title">
           <Target className="w-4 h-4" />
-          Milestones
+          マイルストーン · Milestones
         </div>
         <div className="space-y-2">
           {milestones.map(m => {
@@ -126,7 +138,7 @@ export const Sidebar = ({
       <div className="glass-card p-4">
         <div className="sidebar-title">
           <Link2 className="w-4 h-4" />
-          Quick Links
+          クイックリンク · Quick Links
         </div>
         <div className="space-y-1">
           {quickLinks.map(link => (
@@ -152,7 +164,7 @@ export const Sidebar = ({
         >
           <div className="flex items-center gap-2">
             <Palette className="w-4 h-4" />
-            Theme
+            テーマ · Theme
           </div>
           <span className="text-xs">{themes.find(t => t.id === theme)?.emoji}</span>
         </button>
