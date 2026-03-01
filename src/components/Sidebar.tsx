@@ -24,11 +24,12 @@ const quickLinks = [
 ];
 
 const milestones = [
-  { week: 16, label: 'Foundations Done' },
-  { week: 36, label: 'Core Complete' },
-  { week: 75, label: 'Advanced Research' },
-  { week: 95, label: 'MEXT Submitted' },
-  { week: 113, label: 'Depart for Japan!' },
+  { week: 10, label: 'Week 10' },
+  { week: 24, label: 'Genki I Complete' },
+  { week: 32, label: 'JLPT N5' },
+  { week: 52, label: 'Year 1 Complete' },
+  { week: 104, label: 'JLPT N3' },
+  { week: 175, label: 'Depart for Japan!' },
 ];
 
 export const Sidebar = ({
