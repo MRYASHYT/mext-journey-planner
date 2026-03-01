@@ -28,9 +28,13 @@ export const Auth = () => {
                 toast({ title: "Welcome!", description: "Account created. Please check your email to verify." });
             }
         } catch (error: any) {
+            let errorMsg = error.message;
+            if (errorMsg.includes("Email not confirmed")) {
+                errorMsg = "Please verify your email address. Check your inbox (and spam folder) for the confirmation link sent by Supabase.";
+            }
             toast({
                 title: "Authentication Error",
-                description: error.message,
+                description: errorMsg,
                 variant: "destructive"
             });
         } finally {
